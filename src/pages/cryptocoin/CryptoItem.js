@@ -1,4 +1,5 @@
 import React from 'react';
+import DOMPurify from 'dompurify';
 
 const CryptoItem = ({ coin }) => {
   return (
@@ -73,6 +74,11 @@ const CryptoItem = ({ coin }) => {
       <div className='content'>
         <div className='about'>
           <h3>About</h3>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(coin.description ? coin.description.en : ''),
+            }}
+          ></p>
         </div>
       </div>
     </div>

@@ -10,6 +10,15 @@
   color: #edf2f4;
 }
 
+.icon-fav {
+  font-size: 1.2rem;
+  margin-left: 1.2rem;
+}
+
+.icon-fav.favorite {
+  color: rgb(255, 234, 0);
+}
+
 .rank {
   margin-top: 0.5rem;
 }

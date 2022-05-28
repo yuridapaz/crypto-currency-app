@@ -1,19 +1,18 @@
 import React from 'react';
-import { RiStarLine } from 'react-icons/ri';
+import { RiStarFill } from 'react-icons/ri';
 
-const CoinItem = ({ coin }) => {
+const CoinItem = ({ coin, onClick, isFav }) => {
   return (
     <div className='coin-row'>
-      <p>
+      <p className='coin-row-left-icon-p'>
         {coin.market_cap_rank}
-        <RiStarLine
-          className='icon-fav'
-          onClick={(e) => {
-            e.preventDefault();
-            console.log('first');
-          }}
-        />
+        {isFav ? (
+          <RiStarFill className='icon-fav favorite' onClick={onClick} />
+        ) : (
+          <RiStarFill className='icon-fav' onClick={onClick} />
+        )}
       </p>
+
       <div className='img-symbol'>
         <img src={coin.image} alt='' />
         <p>{coin.symbol.toUpperCase()}</p>

@@ -7,17 +7,35 @@ import NavBar from '../../layout/NavBar';
 import SearchInput from '../../components/searchinput/SearchInput';
 import ContainerCurrencies from './ContainerCurrencies';
 import { currenciesClient as createCurrenciesClient } from '../../services/currencies-client';
+import { favoritesRepository as createFavoritesRepository } from '../../helpers/favoriteRepository';
 
 const IndexCrypto = () => {
   const [searchWord, setSearchWord] = useState('');
   const [currencies, setCurrencies] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const currenciesClient = createCurrenciesClient();
+  const favoritesRepository = createFavoritesRepository();
 
-  const handleChange = (event) => {
+  const handleInputChange = (event) => {
     // event.preventDefault();
-
     const searchWord = event.target.value;
     setSearchWord(searchWord.toLowerCase());
+    console.log(favorites);
+  };
+
+  const handleStarChange = (e, coin, favorites) => {
+    e.preventDefault();
+    if (!favoritesRepository.containFavorite(coin, favorites)) {
+      const newList = favoritesRepository.addFavorite(coin, favorites);
+      setFavorites(newList);
+      favoritesRepository.saveToLocalStorage(newList);
+      // console.log('adicinou', favorites);
+      return;
+    }
+    const newList = favoritesRepository.removeFavorite(coin, favorites);
+    setFavorites(newList);
+    favoritesRepository.saveToLocalStorage(newList);
+    // console.log('removeu', favorites);
   };
 
   useEffect(() => {
@@ -28,10 +46,15 @@ const IndexCrypto = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const coinsFavorites = JSON.parse(favoritesRepository.getLocalStorage());
+    setFavorites(coinsFavorites);
+  }, []);
+
   return (
     <>
       <NavBar />
-      <SearchInput onChange={handleChange} />
+      <SearchInput onChange={handleInputChange} />
       <ContainerCurrencies>
         {currencies
           .filter((coin) => {
@@ -40,7 +63,11 @@ const IndexCrypto = () => {
           .map((coin) => {
             return (
               <Link to={`/coin/${coin.id}`} element={<IndexCoin />} key={coin.id}>
-                <CoinItem coin={coin} />
+                <CoinItem
+                  coin={coin}
+                  onClick={(e) => handleStarChange(e, coin, favorites)}
+                  isFav={favoritesRepository.alreadyFavorite(coin, favorites)}
+                />
               </Link>
             );
           })}

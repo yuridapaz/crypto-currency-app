@@ -30,14 +30,24 @@
   padding: 0.7rem 1rem;
 }
 
+.coin-row-left-icon-p {
+  display: flex;
+  align-items: center;
+}
+
 .coin-row:hover {
-  transform: scale(1.04);
-  transition: 0.3s ease-in-out;
+  transform: scale(1.01);
+  transition: 0.2s ease-in-out;
   cursor: pointer;
 }
 
 .icon-fav {
-  margin-left: 1.5rem;
+  font-size: 1.2rem;
+  margin-left: 1.2rem;
+}
+
+.icon-fav.favorite {
+  color: rgb(255, 234, 0);
 }
 
 img {
